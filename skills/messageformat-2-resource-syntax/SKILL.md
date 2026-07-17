@@ -19,7 +19,7 @@ Treat `.mfr` as the proposed W3C Message Resource format. It is not currently pa
    - For migrations, preserve source meaning, placeholders, selector behavior, and significant whitespace.
    - For maintenance, avoid unintended semantic changes and keep related entries compact.
    - For review, report actionable findings with file and line references; do not rewrite unless asked.
-5. Author every dynamic message with `@param` metadata and typed `.input` declarations. Ensure selectors have an exhaustive fallback variant.
+5. Validate every entry value as MF2. For messages with matchers, ensure each selector has the required function annotation and the matcher has an exhaustive fallback variant. Treat translator-facing `@param` metadata and explicit input declarations as recommended authoring conventions, not resource-syntax requirements.
 6. Validate the finished resource against the review checklist in the reference. Re-read multiline values and escaped identifier punctuation carefully.
 
 ## Output Expectations
@@ -27,5 +27,5 @@ Treat `.mfr` as the proposed W3C Message Resource format. It is not currently pa
 - Preserve user-facing meaning and translator context.
 - Prefer the smallest coherent change.
 - Distinguish structural dots from literal punctuation in identifiers.
-- Preserve significant whitespace with quoted literals.
+- Preserve significant whitespace with an MF2 quoted pattern or an appropriate resource escape; do not use expression literal bars as pattern delimiters.
 - State any syntax or semantic uncertainty instead of silently guessing.

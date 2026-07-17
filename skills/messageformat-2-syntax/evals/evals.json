@@ -1,0 +1,38 @@
+{
+  "skill_name": "messageformat-2-syntax",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write only a valid Unicode MessageFormat 2 message for an external integer variable named $count. Select singular text for one notification and plural text for every other value, display the formatted count in both variants, and include the required fallback.",
+      "expected_output": "A complex MF2 message with a typed input declaration, a matcher on $count, one and catch-all variants, and the count placeholder in both patterns.",
+      "assertions": [
+        "[standard] The output contains one well-formed complex MF2 message with an input declaration that annotates $count using :integer.",
+        "[standard] The matcher selects on $count and contains a singular variant (for example, exact numeric key 1 or category key one) and an all-* fallback variant.",
+        "[standard] Every variant has exactly one key and a quoted pattern, and both patterns display {$count}.",
+        "[quality] The response follows the request to return only the message, without resource-container syntax or unrelated prose."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review the MF2 message below. Identify every syntax or data-model error, classify each error, and provide a corrected message that keeps the intended line break and plural behavior.\n\n```mf2\n.input {$count :integer select=plural select=exact}\n.match $count\none {{Line one\\n{$count} item}}\nother {{Line one\\n{$count} items}}\n```",
+      "expected_output": "A diagnosis of the unsupported backslash-n escape, duplicate option name, and missing catch-all variant, followed by a corrected valid MF2 message using a real newline and an all-* fallback.",
+      "assertions": [
+        "[standard] The response identifies \\n as an invalid MF2 escape and classifies it as a syntax error.",
+        "[standard] The response identifies duplicate select options and classifies the duplicate option name as a data-model error.",
+        "[standard] The response identifies the missing all-* fallback as a data-model error.",
+        "[standard] The corrected message removes the duplicate option, uses a real line break in pattern text, and includes an all-* fallback variant."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Return only an MF2 message in a fenced code block. It must render exactly two spaces before and after this content: `Path C:\\tmp uses {name}; important: VALUE`. Render `{name}` literally, render VALUE from $value, and mark only the word `important` with strong markup.",
+      "expected_output": "A simple MF2 pattern preserving two leading and trailing spaces, escaping the literal backslash and braces, using {$value}, and wrapping only important in strong markup.",
+      "assertions": [
+        "[standard] The pattern escapes the literal backslash in C:\\tmp and the literal braces around name using only MF2-supported escapes.",
+        "[standard] VALUE is represented by {$value}, and only important is enclosed by matching strong markup placeholders.",
+        "[standard] The pattern content has exactly two leading and two trailing spaces.",
+        "[quality] The response contains only the requested fenced MF2 message."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "skill_name": "messageformat-2-resource-syntax",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write only a proposed W3C Message Resource (.mfr) for Acme Inbox. Include a resource-level translator comment, the frontmatter marker, a fully qualified `inbox.notifications` section with a section comment, a static `title` entry, and a `count` entry that selects singular/plural text from an external integer $count. Add translator-facing parameter metadata for $count.",
+      "expected_output": "A valid .mfr resource with correctly placed comments and frontmatter, a full section identifier, static and complex MF2 entries, parameter metadata, a typed declaration, and a catch-all variant.",
+      "assertions": [
+        "[standard] The resource-level comment and metadata/frontmatter ordering satisfy the Message Resource attachment and placement rules.",
+        "[standard] The section uses the full identifier inbox.notifications and contains valid title and count entries.",
+        "[standard] Every continuation line of the complex count value is indented, and the embedded value is a valid MF2 message with an all-* fallback.",
+        "[convention] The section comment supplies translator context and @param metadata explains $count before the count entry.",
+        "[convention] The external $count input is explicitly annotated with :integer."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review this proposed Message Resource. Identify each resource-container error separately from any embedded MF2 error, then return a corrected resource.\n\n```mfr\nwelcome = Hello\n---\n@owner localization\n\n# Settings strings.\n[settings]\nbad?key = Oops\nitems =\n.input {$count :integer}\n.match $count\none {{One item}}\n* {{Many items}}\n```",
+      "expected_output": "A diagnosis covering misplaced frontmatter, detached metadata, an unescaped question mark in an identifier, and unindented multiline value lines, plus a corrected valid resource whose embedded MF2 remains valid.",
+      "assertions": [
+        "[standard] The response identifies that frontmatter cannot follow an entry and either moves it before all entries and section headers or removes the empty frontmatter marker.",
+        "[standard] The response explains that the blank line prevents @owner from attaching to the following comment or section under the proposal's attachment semantics, then places it with an intended target or removes it; it does not incorrectly call the metadata line itself an ABNF violation.",
+        "[standard] The response identifies and fixes the unescaped question mark in bad?key while preserving the key's literal identity, for example as bad\\x3fkey.",
+        "[standard] The response identifies and fixes every unindented continuation line under items.",
+        "[standard] The response distinguishes resource-container failures from the embedded MF2 message, which is otherwise valid."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Migrate these source messages into only a valid proposed `.mfr` resource. Preserve meaning and significant whitespace. Use translator context where it helps.\n\n- `plain.title`: `Welcome`\n- `items`: ICU MessageFormat 1 `{count, plural, one {# item} other {# items}}`, with integer count\n- `separator`: a comma followed by exactly one trailing space\n- literal source key `Are you sure?`: `Continue?`",
+      "expected_output": "A valid .mfr resource with a structural plain.title identifier, an MF2 matcher for items, a separator that resolves to comma-plus-space without literal vertical bars, and an escaped identifier for the question-mark key.",
+      "assertions": [
+        "[standard] The output is a grammatically valid Message Resource and every entry value is valid MF2.",
+        "[standard] plain.title uses a structural dot, while the literal question mark in the source key is escaped in the resource identifier.",
+        "[standard] items is migrated to an MF2 matcher with a declared selector and an all-* fallback while preserving singular/plural meaning.",
+        "[standard] separator resolves to exactly comma plus one trailing space; vertical bars are not introduced as literal output characters.",
+        "[convention] Translator context and parameter metadata are useful but do not obscure the resource syntax."
+      ]
+    }
+  ]
+}

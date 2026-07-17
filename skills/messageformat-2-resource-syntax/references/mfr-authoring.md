@@ -18,15 +18,22 @@ The `.mfr` container follows the [W3C Message Resources proposal](https://github
 - Normalize resource line endings inside values to U+000A. Escape U+000D as `\r` when it is part of a value.
 - Preserve MF2 escapes `\\`, `\{`, `\|`, and `\}` through resource parsing without doubling them.
 
-## Authoring Rules
+## Syntax Requirements
+
+- Keep frontmatter, sections, entries, comments, and metadata within the resource grammar and attachment rules above.
+- Escape identifier punctuation that is not structural, and indent every continuation line of a multiline value.
+- Validate every entry value independently as Unicode MF2.
+- For an MF2 matcher, annotate each selector with a function either directly in the selector expression or indirectly through a declaration. Include an exhaustive all-`*` fallback variant.
+
+## Recommended Authoring Conventions
 
 - Write translator-context comments, not implementation-location comments. A top-level comment explains the resource; a section comment explains the messages in that section.
 - Keep the top-level resource comment separate from the first section comment with one empty line.
 - Keep related entries compact. Add a visual spacer before and after message blocks that use `@param` metadata or have complex MF2 bodies.
 - Do not leave an empty line between `id =` and the first indented line of its value.
-- Add `@param` metadata for every placeholder before the entry using it. Describe what the placeholder represents for translators.
-- Declare a type for every MF2 input, such as `.input {$count :integer}` or `.input {$name :string}`.
-- Use quoted literals for values where leading or trailing whitespace is significant. For example, `separator = |, |` preserves the trailing space.
+- Add `@param` metadata for placeholders when it gives translators useful context. Describe what the placeholder represents rather than its implementation source.
+- Prefer explicit input declarations when known type or function information helps readers, such as `.input {$count :integer}`. A declaration is not required merely because a variable appears in a message.
+- Use an MF2 quoted pattern when leading or trailing whitespace is significant. For example, `separator = {{, }}` represents a comma followed by one space. At the top level of pattern text, `|` is a literal character; it does not delimit a quoted literal.
 - Put general product content first, ordered alphabetically by section. Keep standalone common utilities next, then leave-review and completion sections last.
 
 ## MF2 Syntax
@@ -49,11 +56,13 @@ items =
   *   {{You have {$count} items.}}
 ```
 
-Use a quoted literal when the value must visibly preserve whitespace or includes syntax-significant text:
+Use a quoted pattern when the complete value must visibly preserve whitespace or includes syntax-significant text:
 
 ```mfr
-separator = |, |
+separator = {{, }}
 ```
+
+Quoted literals such as `|, |` are expression operands and belong inside `{...}`. Writing bars directly in a simple pattern renders the bars.
 
 ## Identifier Rules
 
@@ -84,7 +93,7 @@ Use [message-resource.abnf](message-resource.abnf), copied verbatim from the W3C
 - Ensure all section and entry identifiers satisfy the grammar.
 - Ensure frontmatter placement and comment/metadata attachment satisfy the proposal semantics.
 - Ensure dots are path separators unless they represent literal punctuation.
-- Ensure every placeholder has explanatory `@param` metadata and a typed `.input` declaration.
-- Ensure every selector has an exhaustive fallback variant (`*`).
+- Ensure every MF2 matcher selector has a function annotation and every matcher has an exhaustive fallback variant (`*`).
 - Check that no multiline value has a blank first continuation line.
-- Check that comments give translators enough semantic context to translate accurately.
+- Convention: check that comments and `@param` metadata give translators enough semantic context to translate accurately.
+- Convention: prefer explicit input declarations when known type or function information is useful to maintainers.
