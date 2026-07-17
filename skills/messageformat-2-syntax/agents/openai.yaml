@@ -1,0 +1,4 @@
+interface:
+  display_name: "MessageFormat 2 Syntax"
+  short_description: "Author, edit, and validate Unicode MF2 syntax"
+  default_prompt: "Use $messageformat-2-syntax to author, edit, or validate this Unicode MF2 message."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "W3C Message Resource Syntax"
+  short_description: "Author, edit, and validate W3C resource syntax"
+  default_prompt: "Use $messageformat-2-resource-syntax to author, edit, or validate this proposed W3C Message Resource."
