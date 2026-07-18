@@ -7,6 +7,7 @@ export const HARNESS_API_VERSION = 1;
 
 const builtInHarnesses = new Map([
   ["codex", "scripts/benchmark-harnesses/codex.mjs"],
+  ["claude", "scripts/benchmark-harnesses/claude.mjs"],
   ["process", "scripts/benchmark-harnesses/process.mjs"],
 ]);
 
