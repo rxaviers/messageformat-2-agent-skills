@@ -3,9 +3,10 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const runsRoot = join(root, "benchmarks", "runs");
 const errors = [];
 
@@ -33,16 +34,36 @@ function requireFile(path) {
   if (!existsSync(path)) errors.push(`${path}: missing`);
 }
 
+function sameJson(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function sameRequestedModel(left, right) {
+  if (typeof left === "string" || typeof right === "string") return left === right;
+  return left?.requested === right?.requested && sameJson(left?.inference, right?.inference);
+}
+
 for (const runId of readdirSync(runsRoot, { withFileTypes: true })
-  .filter((entry) => entry.isDirectory())
+  .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
   .map((entry) => entry.name)
   .sort()) {
   const runDir = join(runsRoot, runId);
   const manifest = readJson(join(runDir, "manifest.json"));
   if (!manifest) continue;
 
-  if (manifest.status && manifest.status !== "complete") {
-    console.log(`Skipping pending benchmark ${runId} (${manifest.status}).`);
+  const status = manifest.status ?? "complete";
+  const allowedStatuses = new Set(["complete", "outputs_captured_pending_grading", "invalid"]);
+  if (!allowedStatuses.has(status)) {
+    errors.push(`${runId}: unknown manifest status ${status}`);
+    continue;
+  }
+  if (status === "invalid") {
+    console.log(`Skipping invalid benchmark ${runId}.`);
+    continue;
+  }
+  const pendingCapture = status === "outputs_captured_pending_grading";
+  if (pendingCapture && ![2, 3].includes(manifest.schema_version)) {
+    console.log(`Skipping legacy pending benchmark ${runId}.`);
     continue;
   }
 
@@ -52,6 +73,28 @@ for (const runId of readdirSync(runsRoot, { withFileTypes: true })
   if (!Array.isArray(manifest.skills) || manifest.skills.length === 0) {
     errors.push(`${runId}: manifest must contain at least one skill`);
     continue;
+  }
+  if (pendingCapture) {
+    const runner = readJson(join(runDir, "runner.json"));
+    const inputs = readJson(join(runDir, "run-inputs.json"));
+    if (runner && manifest.schema_version === 2 && (runner.model !== manifest.model || runner.reasoning_effort !== manifest.reasoning_effort)) {
+      errors.push(`${runId}: runner model settings do not match the manifest`);
+    }
+    if (runner && manifest.schema_version === 3 && !sameJson(runner.model, manifest.model)) {
+      errors.push(`${runId}: runner model settings do not match the manifest`);
+    }
+    if (runner && manifest.schema_version === 3 && !sameJson(runner.harness, manifest.harness)) {
+      errors.push(`${runId}: runner harness does not match the manifest`);
+    }
+    if (manifest.schema_version === 3 && manifest.classification !== "diagnostic" && manifest.harness?.isolation?.verified !== true) {
+      errors.push(`${runId}: non-diagnostic benchmark lacks verified harness isolation`);
+    }
+    if (runner && runner.trials_per_eval !== manifest.trials_per_eval) {
+      errors.push(`${runId}: runner trial count does not match the manifest`);
+    }
+    if (inputs && !Array.isArray(inputs.execution_order)) {
+      errors.push(`${runId}: run-inputs.json is missing execution_order`);
+    }
   }
 
   for (const skill of manifest.skills) {
@@ -74,6 +117,41 @@ for (const runId of readdirSync(runsRoot, { withFileTypes: true })
       evalsById = new Map(evals.evals.map((item) => [item.id, item]));
     } catch (error) {
       errors.push(`${runId}: cannot parse ${skill.evals_path}: ${error.message}`);
+    }
+
+    if (pendingCapture) {
+      for (let trial = 1; trial <= manifest.trials_per_eval; trial += 1) {
+        const trialId = `trial-${String(trial).padStart(2, "0")}`;
+        for (const evalId of evalsById.keys()) {
+          for (const directoryArm of ["with-skill", "without-skill"]) {
+            const outputDir = join(runDir, skill.name, trialId, `eval-${evalId}`, directoryArm);
+            const responsePath = join(outputDir, "response.md");
+            requireFile(responsePath);
+            if (existsSync(responsePath) && readFileSync(responsePath, "utf8").trim().length === 0) {
+              errors.push(`${responsePath}: empty`);
+            }
+            const timing = readJson(join(outputDir, "timing.json"));
+            if (timing && manifest.schema_version === 2 && timing.exit_code !== 0) {
+              errors.push(`${outputDir}: timing.json records a failed call`);
+            }
+            if (timing && manifest.schema_version === 2 && (timing.model !== manifest.model || timing.reasoning_effort !== manifest.reasoning_effort)) {
+              errors.push(`${outputDir}: timing model settings do not match the manifest`);
+            }
+            if (timing && manifest.schema_version === 3 && !sameRequestedModel(timing.model, manifest.model)) {
+              errors.push(`${outputDir}: timing model settings do not match the manifest`);
+            }
+            if (timing && manifest.schema_version === 3 && (
+              timing.harness?.name !== manifest.harness?.name || timing.harness?.version !== manifest.harness?.version
+            )) {
+              errors.push(`${outputDir}: timing harness does not match the manifest`);
+            }
+            if (timing && (!Number.isFinite(timing.duration_ms) || timing.duration_ms < 0)) {
+              errors.push(`${outputDir}: timing.json has an invalid duration`);
+            }
+          }
+        }
+      }
+      continue;
     }
 
     const skillDir = join(runDir, skill.name);
