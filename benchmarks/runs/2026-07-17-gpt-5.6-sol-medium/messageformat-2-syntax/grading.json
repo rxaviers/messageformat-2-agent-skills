@@ -1,0 +1,93 @@
+{
+  "skill_name": "messageformat-2-syntax",
+  "rubric": "skills/messageformat-2-syntax/evals/evals.json",
+  "results": [
+    {
+      "eval_id": 1,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Uses :number and the malformed matcher selector .match {$count}." },
+          "with_skill": { "passed": true, "evidence": "Uses .input {$count :integer} followed by .match $count." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Contains singular and fallback keys, but .match {$count} is not a valid matcher selector." },
+          "with_skill": { "passed": true, "evidence": "Matches $count with one and * variants." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Both variants have one key, a quoted pattern, and {$count}." },
+          "with_skill": { "passed": true, "evidence": "Both variants have one key, a quoted pattern, and {$count}." }
+        },
+        {
+          "index": 4,
+          "category": "quality",
+          "without_skill": { "passed": true, "evidence": "Returns only the attempted MF2 message." },
+          "with_skill": { "passed": true, "evidence": "Returns only the MF2 message." }
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Identifies \\n as an invalid MF2 escape and a syntax error." },
+          "with_skill": { "passed": true, "evidence": "Identifies \\n as an invalid MF2 escape and a syntax error." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Calls the duplicate option a syntax or well-formedness error rather than a data-model error." },
+          "with_skill": { "passed": true, "evidence": "Classifies the duplicate select option as a data-model error." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Classifies the missing * fallback as a data-model error." },
+          "with_skill": { "passed": true, "evidence": "Classifies the missing * fallback as a data-model error." }
+        },
+        {
+          "index": 4,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "The correction removes the duplicate, uses real line breaks, and adds *." },
+          "with_skill": { "passed": true, "evidence": "The correction removes the duplicate, uses real line breaks, and adds *." }
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Correctly escapes the backslash and literal braces." },
+          "with_skill": { "passed": true, "evidence": "Correctly escapes the backslash and literal braces." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Uses {$value} and wraps only important in strong markup." },
+          "with_skill": { "passed": true, "evidence": "Uses {$value} and wraps only important in strong markup." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Preserves exactly two leading and trailing spaces." },
+          "with_skill": { "passed": true, "evidence": "Preserves exactly two leading and trailing spaces." }
+        },
+        {
+          "index": 4,
+          "category": "quality",
+          "without_skill": { "passed": true, "evidence": "Returns only the requested fenced message." },
+          "with_skill": { "passed": true, "evidence": "Returns only the requested fenced message." }
+        }
+      ]
+    }
+  ]
+}

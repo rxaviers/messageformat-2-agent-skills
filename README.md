@@ -41,3 +41,13 @@ npx skills remove messageformat-2-resource-syntax
 | [`messageformat-2-resource-syntax`](skills/messageformat-2-resource-syntax/) | Authors, edits, and validates proposed W3C Message Resource (`.mfr`) syntax. |
 
 Each skill is self-contained in `skills/<skill-name>/` and follows the shared [Agent Skills specification](https://agentskills.io/).
+
+## Benchmarks
+
+Benchmark runs compare the same model and settings with and without each skill. Results, raw responses, grading, and reproduction metadata are stored under [`benchmarks/`](benchmarks/).
+
+Validate the tracked benchmark records with:
+
+```sh
+node scripts/validate-benchmarks.mjs
+```

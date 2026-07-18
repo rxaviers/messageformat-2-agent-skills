@@ -1,0 +1,111 @@
+{
+  "skill_name": "messageformat-2-resource-syntax",
+  "rubric": "skills/messageformat-2-resource-syntax/evals/evals.json",
+  "results": [
+    {
+      "eval_id": 1,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Places the resource comment and frontmatter before entries and sections." },
+          "with_skill": { "passed": true, "evidence": "Places the resource comment and frontmatter before entries and sections." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Uses [inbox.notifications] with title and count entries." },
+          "with_skill": { "passed": true, "evidence": "Uses [inbox.notifications] with title and count entries." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Indents the complex value and includes an exhaustive * variant." },
+          "with_skill": { "passed": true, "evidence": "Indents the complex value and includes an exhaustive * variant." }
+        },
+        {
+          "index": 4,
+          "category": "convention",
+          "without_skill": { "passed": false, "evidence": "Places the section comment after the section header and writes # @param as a comment instead of metadata." },
+          "with_skill": { "passed": true, "evidence": "Places translator context before the section and attached @param metadata before count." }
+        },
+        {
+          "index": 5,
+          "category": "convention",
+          "without_skill": { "passed": true, "evidence": "Declares $count with :integer." },
+          "with_skill": { "passed": true, "evidence": "Declares $count with :integer." }
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Removes the empty late frontmatter marker, which is an allowed correction." },
+          "with_skill": { "passed": true, "evidence": "Moves the frontmatter marker before all entries and sections." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Incorrectly says @owner attaches across the blank line and preserves the detachment." },
+          "with_skill": { "passed": true, "evidence": "Explains the attachment break and places metadata directly with the intended section." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Renames bad?key to bad-key instead of preserving its literal identity with an escape." },
+          "with_skill": { "passed": true, "evidence": "Preserves the key as bad\\x3fkey." }
+        },
+        {
+          "index": 4,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Identifies and indents every multiline continuation." },
+          "with_skill": { "passed": true, "evidence": "Identifies and indents every multiline continuation." }
+        },
+        {
+          "index": 5,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Separates container failures from the otherwise valid embedded MF2." },
+          "with_skill": { "passed": true, "evidence": "Separates container failures from the otherwise valid embedded MF2." }
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Uses an invalid resource identifier and malformed .match {$count} selector." },
+          "with_skill": { "passed": true, "evidence": "Produces valid resource syntax and valid embedded MF2 values." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "The quoted-looking |Are you sure?| form is not a valid escaped resource identifier." },
+          "with_skill": { "passed": true, "evidence": "Keeps the structural dot and escapes spaces and the question mark in the literal key." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Uses :number and the malformed selector .match {$count}." },
+          "with_skill": { "passed": true, "evidence": "Uses :integer, .match $count, one, and * while rendering the count." }
+        },
+        {
+          "index": 4,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Uses {{, }} so the value renders comma plus one trailing space." },
+          "with_skill": { "passed": true, "evidence": "Uses {{, }} so the value renders comma plus one trailing space." }
+        },
+        {
+          "index": 5,
+          "category": "convention",
+          "without_skill": { "passed": false, "evidence": "Provides a comment but no attached translator-facing parameter metadata." },
+          "with_skill": { "passed": true, "evidence": "Provides concise translator context and attached @param metadata." }
+        }
+      ]
+    }
+  ]
+}
