@@ -1,0 +1,42 @@
+{
+  "skill_name": "messageformat-2-syntax",
+  "trials_per_eval": 1,
+  "arms": {
+    "without_skill": {
+      "passed": 8,
+      "total": 12,
+      "pass_rate": 0.6666666666666666,
+      "categories": {
+        "standard": { "passed": 6, "total": 10 },
+        "quality": { "passed": 2, "total": 2 }
+      },
+      "per_eval": [
+        { "eval_id": 1, "passed": 2, "total": 4 },
+        { "eval_id": 2, "passed": 3, "total": 4 },
+        { "eval_id": 3, "passed": 3, "total": 4 }
+      ]
+    },
+    "with_skill": {
+      "passed": 9,
+      "total": 12,
+      "pass_rate": 0.75,
+      "categories": {
+        "standard": { "passed": 7, "total": 10 },
+        "quality": { "passed": 2, "total": 2 }
+      },
+      "per_eval": [
+        { "eval_id": 1, "passed": 3, "total": 4 },
+        { "eval_id": 2, "passed": 2, "total": 4 },
+        { "eval_id": 3, "passed": 4, "total": 4 }
+      ]
+    }
+  },
+  "delta": {
+    "passed": 1,
+    "pass_rate": 0.08333333333333337,
+    "percentage_points": 8.333333333333337
+  },
+  "blind_comparison": "not_run",
+  "tokens": "not_captured",
+  "duration_ms": "not_captured"
+}

@@ -1,0 +1,93 @@
+{
+  "skill_name": "messageformat-2-syntax",
+  "rubric": "skills/messageformat-2-syntax/evals/evals.json",
+  "results": [
+    {
+      "eval_id": 1,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Uses .input {$count :number}, not :integer." },
+          "with_skill": { "passed": true, "evidence": "Uses .input {$count :integer}." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Matches on .match {$count :number}, re-annotating $count in the matcher after it was already declared via .input, an invalid duplicate declaration rather than a plain $count selector." },
+          "with_skill": { "passed": true, "evidence": "Matches $count with one and * variants." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Both variants have one key, a quoted pattern, and {$count}." },
+          "with_skill": { "passed": false, "evidence": "The one variant reads \"You have one notification.\" with no {$count} placeholder; only the * variant displays {$count}." }
+        },
+        {
+          "index": 4,
+          "category": "quality",
+          "without_skill": { "passed": true, "evidence": "Returns only the MF2 message, no extra prose." },
+          "with_skill": { "passed": true, "evidence": "Returns only the fenced MF2 message." }
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Explicitly labels \\n as a syntax error." },
+          "with_skill": { "passed": true, "evidence": "Explicitly labels \\n as an invalid escape / well-formedness error." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Identifies the duplicate select option but labels it a \"Syntax error\", not a data-model error." },
+          "with_skill": { "passed": false, "evidence": "Identifies the duplicate select option but labels it a \"well-formedness error\", not a data-model error." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Dedicated item 4, \"Missing fallback (catch-all) variant — Data-model error\", matches the required classification exactly." },
+          "with_skill": { "passed": false, "evidence": "Mentions replacing other with * only inside the fix notes; never itemizes the missing fallback as its own (data-model) error." }
+        },
+        {
+          "index": 4,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Corrected message removes the duplicate option, uses a real line break, and includes *." },
+          "with_skill": { "passed": true, "evidence": "Corrected message removes the duplicate option, uses a real line break, and includes *." }
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Escapes the backslash as C:\\\\tmp and the braces as \\{name\\}." },
+          "with_skill": { "passed": true, "evidence": "Escapes the backslash as C:\\\\tmp and the braces as \\{name\\}." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Introduces an unnecessary .local $v = {$value} alias and renders {$v} in the pattern instead of {$value} directly; strong markup correctly wraps only important." },
+          "with_skill": { "passed": true, "evidence": "Uses {$value} directly and wraps only important in {#strong}...{/strong}." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Pattern has exactly two leading and two trailing spaces inside {{ }}." },
+          "with_skill": { "passed": true, "evidence": "Pattern has exactly two leading and two trailing spaces." }
+        },
+        {
+          "index": 4,
+          "category": "quality",
+          "without_skill": { "passed": true, "evidence": "Returns only the fenced MF2 message." },
+          "with_skill": { "passed": true, "evidence": "Returns only the fenced MF2 message." }
+        }
+      ]
+    }
+  ]
+}

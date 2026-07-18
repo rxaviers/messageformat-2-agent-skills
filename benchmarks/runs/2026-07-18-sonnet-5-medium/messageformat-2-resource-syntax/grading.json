@@ -1,0 +1,111 @@
+{
+  "skill_name": "messageformat-2-resource-syntax",
+  "rubric": "skills/messageformat-2-resource-syntax/evals/evals.json",
+  "results": [
+    {
+      "eval_id": 1,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "The resource-level comment is immediately followed by \"---\" with no blank line, and the section comment is immediately followed by [inbox.notifications] with no blank line, so both attach correctly." },
+          "with_skill": { "passed": false, "evidence": "A blank line separates the resource-level comment from the \"---\" frontmatter marker, which breaks attachment under the proposal's rules, leaving the comment orphaned." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Uses [inbox.notifications] correctly, but the count entry has no key at all — the .input/.match lines follow directly with no \"count =\" declaration, so count is not a valid entry." },
+          "with_skill": { "passed": false, "evidence": "Never emits a real [inbox.notifications] section-head; instead flattens the section into dotted entry ids (inbox.notifications.title, inbox.notifications.count), so there is no section as such." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "The count value's .input/.match/variant lines are flush-left with no indentation and have no preceding key, so it is not a valid multiline entry value." },
+          "with_skill": { "passed": true, "evidence": "count entry's continuation lines are indented two spaces, and the embedded message is a valid MF2 matcher with a * fallback." }
+        },
+        {
+          "index": 4,
+          "category": "convention",
+          "without_skill": { "passed": false, "evidence": "Uses a plain # comment (\"# $count: the number of unread notifications...\") instead of @param metadata for $count." },
+          "with_skill": { "passed": true, "evidence": "Provides an overall inbox comment and an explicit \"@param $count - Number of unread notifications in the inbox.\" line directly before the count entry." }
+        },
+        {
+          "index": 5,
+          "category": "convention",
+          "without_skill": { "passed": false, "evidence": "Declares .input {$count :number}, not :integer." },
+          "with_skill": { "passed": true, "evidence": "Declares .input {$count :integer}." }
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Incorrectly claims \"the container format has no document-separator token\" and that any use of --- is invalid, rather than diagnosing that frontmatter cannot follow an entry; the corrected resource simply drops the marker under that wrong premise." },
+          "with_skill": { "passed": true, "evidence": "Correctly identifies that the entry before \"---\" is the problem (\"welcome = Hello appears before the --- frontmatter marker... forbids any entry... before frontmatter\") and fixes it by moving the entry after frontmatter." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Never discusses the blank line after @owner or any attachment failure; @owner is silently kept where it was without analysis." },
+          "with_skill": { "passed": true, "evidence": "Explains \"@owner localization is followed by an empty line... As written, @owner attaches to nothing\", frames it as an attachment issue rather than an ABNF violation, and relocates it before frontmatter so it attaches to the whole resource." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "Fixes bad?key by deleting the question mark outright (badkey = Oops), changing the key's literal identity instead of escaping it." },
+          "with_skill": { "passed": true, "evidence": "Escapes the key as bad\\x3fkey = Oops, preserving its literal identity." }
+        },
+        {
+          "index": 4,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "Corrected resource indents all continuation lines of items by two spaces." },
+          "with_skill": { "passed": true, "evidence": "Corrected resource indents all continuation lines of items by two spaces." }
+        },
+        {
+          "index": 5,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "States \"Embedded MF2 error: none. The message body itself is well-formed MF2\", separating it from the container fixes." },
+          "with_skill": { "passed": true, "evidence": "States \"Embedded MF2 error: none... the items message body itself is valid MF2\", separating it from the container fixes." }
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "assertions": [
+        {
+          "index": 1,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "The key \"Are you sure?\" = {{Continue?}} uses a quoted string as an identifier, which the id grammar (id-safe = ALPHA / DIGIT / \"_\", with hex-escapes for other characters) does not permit, so the resource is not grammatically valid." },
+          "with_skill": { "passed": true, "evidence": "Every entry (plain.title, items, separator, are_you_sure\\x3f) uses a grammatically valid identifier and a valid MF2 value." }
+        },
+        {
+          "index": 2,
+          "category": "standard",
+          "without_skill": { "passed": false, "evidence": "plain.title correctly uses a structural dot, but the source key's question mark is left inside an unescaped quoted-string identifier (\"Are you sure?\") instead of a hex-escaped id like are_you_sure\\x3f." },
+          "with_skill": { "passed": true, "evidence": "plain.title uses a structural dot, and are_you_sure\\x3f hex-escapes the literal question mark from the source key." }
+        },
+        {
+          "index": 3,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "items declares .input {$count :integer}, matches $count with one/* variants preserving singular/plural meaning." },
+          "with_skill": { "passed": true, "evidence": "items declares .input {$count :integer}, matches $count with one/* variants preserving singular/plural meaning." }
+        },
+        {
+          "index": 4,
+          "category": "standard",
+          "without_skill": { "passed": true, "evidence": "separator = {{, }} is a quoted pattern that resolves to comma-plus-space with no literal bar characters." },
+          "with_skill": { "passed": false, "evidence": "separator = |, | places a quoted literal delimiter directly as a bare simple pattern, which (per the skill's own authoring reference) renders the pipe characters literally instead of resolving to comma-plus-space." }
+        },
+        {
+          "index": 5,
+          "category": "convention",
+          "without_skill": { "passed": true, "evidence": "Comments explain each entry's purpose without obscuring the resource syntax." },
+          "with_skill": { "passed": true, "evidence": "Comments and @param metadata explain each entry's purpose without obscuring the resource syntax." }
+        }
+      ]
+    }
+  ]
+}
