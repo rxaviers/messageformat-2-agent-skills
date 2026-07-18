@@ -1,0 +1,20 @@
+{
+  "run_id": "2026-07-18-gpt-5.6-terra-medium",
+  "classification": "exploratory",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "medium",
+  "runner": "Codex CLI",
+  "trials_per_eval": 1,
+  "conditions": ["with_skill", "without_skill"],
+  "isolation": {
+    "automatic_skill_discovery": "disabled for both target skills",
+    "with_skill": "task prompt explicitly loaded the repository skill and references",
+    "without_skill": "task prompt did not name or load either target skill",
+    "web_search": "disabled"
+  },
+  "telemetry": {
+    "availability": "partial; raw Codex JSON events were captured for some runs, but per-run timing was not consistently persisted"
+  },
+  "skill_commit": "1ac76f9",
+  "status": "outputs_captured_pending_grading"
+}
