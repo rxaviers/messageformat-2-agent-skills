@@ -44,3 +44,17 @@ node scripts/validate-benchmarks.mjs
 ```
 
 The validator checks immutable source hashes against the recorded Git commit, verifies aggregate arithmetic, and ensures that grading and raw response files exist.
+
+## Running a New Suite
+
+With the Codex CLI configured for the target model, run the paired cases in clean temporary workspaces:
+
+```sh
+node scripts/run-benchmarks.mjs \
+  --model=gpt-5.6-luna \
+  --reasoning-effort=medium \
+  --trials=1 \
+  --run-id=2026-07-18-gpt-5.6-luna-medium
+```
+
+The runner writes each response, JSONL event stream, stderr log, and `timing.json`. Add the corresponding manifest, grading, aggregate, and report files before considering the run complete. Use five trials for a reliability-oriented benchmark; use one trial only for exploratory iteration.

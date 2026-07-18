@@ -1,0 +1,30 @@
+{
+  "skills": [
+    {
+      "name": "messageformat-2-syntax",
+      "skill_path": "skills/messageformat-2-syntax/SKILL.md",
+      "skill_sha256": "3bcc88581d13cfc84d9f1a6141189d583c226f20d3e21c496ae91318852dd830",
+      "evals_path": "skills/messageformat-2-syntax/evals/evals.json",
+      "evals_sha256": "561a53bef64a6088bd0def2e6f257bc8607a51b2e96c90aa1f6ddb121f40f6e6",
+      "eval_ids": [
+        1,
+        2,
+        3
+      ],
+      "usage_records": 6
+    },
+    {
+      "name": "messageformat-2-resource-syntax",
+      "skill_path": "skills/messageformat-2-resource-syntax/SKILL.md",
+      "skill_sha256": "3dddf6e9a8957168d220fb729d85c3d5f24943da5c30aa42c6b18512b9e58df0",
+      "evals_path": "skills/messageformat-2-resource-syntax/evals/evals.json",
+      "evals_sha256": "e73f4fd0d5e6f38e697582004a88290cdc06532887f96c583c6bcbded104c654",
+      "eval_ids": [
+        1,
+        2,
+        3
+      ],
+      "usage_records": 6
+    }
+  ]
+}

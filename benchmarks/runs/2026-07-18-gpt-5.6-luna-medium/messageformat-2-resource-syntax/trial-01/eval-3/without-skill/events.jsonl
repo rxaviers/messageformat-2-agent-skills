@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"019f7472-07d0-7ec1-947a-b7d1c6e2541c"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest."}}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"```mfr\nplain.title = {{Welcome}}\nitems = {{{$count :number} item}}\n    .match {$count :plural}\n    one {{\\# item}}\n    other {{\\# items}}\nseparator = {{, }}\n\"Are you sure?\" = {{Continue?}}\n```"}}
+{"type":"turn.completed","usage":{"input_tokens":18394,"cached_input_tokens":18176,"output_tokens":554,"reasoning_output_tokens":490}}

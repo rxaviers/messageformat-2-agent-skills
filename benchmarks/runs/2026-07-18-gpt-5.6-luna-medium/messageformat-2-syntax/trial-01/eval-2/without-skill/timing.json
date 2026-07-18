@@ -1,0 +1,12 @@
+{
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "duration_ms": 37189,
+  "exit_code": 0,
+  "usage": {
+    "input_tokens": 69333,
+    "cached_input_tokens": 35072,
+    "output_tokens": 1450,
+    "reasoning_output_tokens": 1151
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "skill_name": "messageformat-2-resource-syntax",
+  "rubric": "skills/messageformat-2-resource-syntax/evals/evals.json",
+  "results": [
+    {
+      "eval_id": 1,
+      "assertions": [
+        { "index": 1, "category": "standard", "without_skill": { "passed": true, "evidence": "Places the resource comment and frontmatter before entries and sections." }, "with_skill": { "passed": true, "evidence": "Places the resource comment and frontmatter before entries and sections." } },
+        { "index": 2, "category": "standard", "without_skill": { "passed": true, "evidence": "Uses the full inbox.notifications section with title and count." }, "with_skill": { "passed": true, "evidence": "Uses the full inbox.notifications section with title and count." } },
+        { "index": 3, "category": "standard", "without_skill": { "passed": true, "evidence": "Indents the complex value and includes an all-* fallback." }, "with_skill": { "passed": true, "evidence": "Indents the complex value and includes an all-* fallback." } },
+        { "index": 4, "category": "convention", "without_skill": { "passed": true, "evidence": "Provides a section comment before the section and attached @param metadata." }, "with_skill": { "passed": true, "evidence": "Provides a section comment before the section and attached @param metadata." } },
+        { "index": 5, "category": "convention", "without_skill": { "passed": true, "evidence": "Declares $count with :integer." }, "with_skill": { "passed": true, "evidence": "Declares $count with :integer." } }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "assertions": [
+        { "index": 1, "category": "standard", "without_skill": { "passed": true, "evidence": "Identifies the late frontmatter and moves the entry below the marker." }, "with_skill": { "passed": true, "evidence": "Identifies late frontmatter and moves the marker to the start." } },
+        { "index": 2, "category": "standard", "without_skill": { "passed": false, "evidence": "Does not identify the blank-line metadata attachment error." }, "with_skill": { "passed": true, "evidence": "Identifies the attachment issue and places metadata with the intended section." } },
+        { "index": 3, "category": "standard", "without_skill": { "passed": false, "evidence": "Renames the key to bad_key instead of preserving its literal identity with an escape." }, "with_skill": { "passed": true, "evidence": "Escapes the key as bad\\x3fkey." } },
+        { "index": 4, "category": "standard", "without_skill": { "passed": false, "evidence": "Corrected .input, .match, and variants remain unindented." }, "with_skill": { "passed": true, "evidence": "Indents every continuation line under items." } },
+        { "index": 5, "category": "standard", "without_skill": { "passed": true, "evidence": "Separates container errors from the embedded MF2 assessment." }, "with_skill": { "passed": true, "evidence": "Separates container errors from the embedded MF2 assessment." } }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "assertions": [
+        { "index": 1, "category": "standard", "without_skill": { "passed": false, "evidence": "Uses an invalid identifier and malformed matcher/value structure." }, "with_skill": { "passed": true, "evidence": "Produces valid resource and embedded MF2 syntax." } },
+        { "index": 2, "category": "standard", "without_skill": { "passed": false, "evidence": "Uses a quoted identifier rather than escaping the literal source key." }, "with_skill": { "passed": true, "evidence": "Uses structural plain.title and escapes the literal question-mark key." } },
+        { "index": 3, "category": "standard", "without_skill": { "passed": false, "evidence": "Does not produce a valid integer matcher with an all-* fallback." }, "with_skill": { "passed": true, "evidence": "Uses :integer, .match $count, one, and *." } },
+        { "index": 4, "category": "standard", "without_skill": { "passed": true, "evidence": "Uses {{, }} for comma plus one trailing space." }, "with_skill": { "passed": true, "evidence": "Uses {{, }} for comma plus one trailing space." } },
+        { "index": 5, "category": "convention", "without_skill": { "passed": false, "evidence": "Provides no translator context or parameter metadata." }, "with_skill": { "passed": false, "evidence": "Provides translator context but no @param metadata; this convention assertion is therefore not fully satisfied." } }
+      ]
+    }
+  ]
+}

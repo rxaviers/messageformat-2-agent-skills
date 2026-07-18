@@ -41,6 +41,11 @@ for (const runId of readdirSync(runsRoot, { withFileTypes: true })
   const manifest = readJson(join(runDir, "manifest.json"));
   if (!manifest) continue;
 
+  if (manifest.status && manifest.status !== "complete") {
+    console.log(`Skipping pending benchmark ${runId} (${manifest.status}).`);
+    continue;
+  }
+
   if (manifest.run_id !== runId) {
     errors.push(`${runId}: manifest run_id does not match its directory`);
   }

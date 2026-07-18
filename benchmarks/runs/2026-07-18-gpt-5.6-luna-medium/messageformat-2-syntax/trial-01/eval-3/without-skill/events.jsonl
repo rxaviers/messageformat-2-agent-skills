@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"019f746e-feb7-7081-9d7b-ad82b49fb635"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest."}}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"```mf2\n.input {$value}\n{{  Path C:\\\\tmp uses \\{name\\}; {#strong}important{/strong}: {$value}  }}\n```"}}
+{"type":"turn.completed","usage":{"input_tokens":18147,"cached_input_tokens":17152,"output_tokens":672,"reasoning_output_tokens":632}}
